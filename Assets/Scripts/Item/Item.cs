@@ -15,17 +15,37 @@ public class Item : ScriptableObject
     }
 
     [SerializeField]
-    Type ItemType { get; } = Type.HPRecovery;
+    Type _itemType = Type.HPRecovery;
+    public Type ItemType
+    {
+        get { return _itemType; }
+    }
 
     [SerializeField]
-    string Name { get; } = "";
+    string _name = "";
+    public string Name
+    {
+        get { return _name; }
+    }
 
     [SerializeField]
-    string SortName { get; } = "";
+    string _sortName = "";
+    public string SortName
+    {
+        get { return _sortName; }
+    }
 
     [SerializeField]
-    string Detail { get; } = "";
+    string _detail = "";
+    public string Detail
+    {
+        get { return _detail; }
+    }
 
     [SerializeField]
-    int Amount { get; } = 0;
+    int _amount = 0;
+    public int Amount
+    {
+        get { return _amount; }
+    }
 }
