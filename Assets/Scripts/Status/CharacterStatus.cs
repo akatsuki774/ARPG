@@ -1,22 +1,35 @@
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public abstract class CharacterStatus : ScriptableObject
 {
-    // ƒŒƒxƒ‹
+    // ãƒ¬ãƒ™ãƒ«
     [SerializeField]
-    int level;
-    // Å‘åHP
+    int Level { get; set; } = 1;
+    // æœ€å¤§HP
     [SerializeField]
-    int maxHp = 10;
+    int MaxHp { get; set; } = 10;
     // HP
+    private int _hp = 10;
     [SerializeField]
-    int hp = 10;
-    // —Í
+    int Hp 
+    {
+        get { return _hp; }
+        set
+        {
+            _hp = Mathf.Max(0, Mathf.Min(MaxHp, value));
+        }
+    }
+    // åŠ›
     [SerializeField]
-    int agility = 5;
-    // ‘Ï‹v—Í
+    int Power { get; set; } = 5;
+    // è€ä¹…åŠ›
     [SerializeField]
-    int strength = 10;
+    int Strength { get; set; } = 10;
+    // ç´ æ—©ã•
+    [SerializeField]
+    int Agility { get; set; } = 5;
 }
