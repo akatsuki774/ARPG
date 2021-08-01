@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class ItemInfo : ScriptableObject
+[CreateAssetMenu(fileName = "Item", menuName = "CreateItem")]
+public class Item : ScriptableObject
 {
     public enum Type
     {
