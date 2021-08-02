@@ -6,9 +6,8 @@ using UnityEngine;
 [Serializable]
 public abstract class CharacterStatus : ScriptableObject
 {
-    // レベル
-    [SerializeField]
-    int Level { get; set; } = 1;
+    // 名前
+    string Name { get; set; } = "";
     // HP
     [SerializeField]
     int MaxHp { get; set; } = 10;
