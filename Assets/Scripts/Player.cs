@@ -1,34 +1,28 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : Charactor
+public class Player : CharactorObject
 {
+    [SerializeField]
+    CharacterStatus status = null;
+
     public GameObject CameraObject;
-    public int defaultDamagePoint = 1;
-    public int defautlNextExp = 5;
 
     private Dungueon dungueon;
+
+    // ステータス
 
     private int currentLevel;
     private Layer2D layer2D;
     private Animator animator;
     private int currentDirection;
-    private int currentDamagePoint;
-    private int currentExp;
-    private int nextExp;
 
     // Start is called before the first frame update
-    protected override void Awake() {
-        base.Awake();
-
+    void Awake() {
         CameraObject = Camera.main.gameObject;
         currentLevel = 1;
-        currentDamagePoint = defaultDamagePoint;
-        isAlive = true;
-        currentExp = 0;
-        nextExp = defautlNextExp;
         animator = GetComponent<Animator>();
         currentDirection = 1;
         animator.SetInteger( "Direction", currentDirection );
@@ -127,24 +121,10 @@ public class Player : Charactor
         return currentLevel;
     }
 
-    public override int GetDamage() {
-        return currentDamagePoint;
-    }
-
-    public void AddExp( int exp ) {
-        currentExp += exp;
-        if ( currentExp >= nextExp ) {
-            LevelUp();
-            currentExp = 0;
-        }
+    public override int CalcAttackPoint() {
+        return 0;
     }
 
     public void LevelUp() {
-        currentLevel += 1;
-        nextExp = ( int )( nextExp * 1.2f );
-        currentDamagePoint += 1;
-        maxLife = ( int )( maxLife * 1.2f );
-        currentLife = maxLife;
-        GameManager.instance.LevelUp();
     }
 }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e558324b4b6cc7b4dab3d58d4ccc783f, type: 3}
+  m_Name: Nanaco
+  m_EditorClassIdentifier: 
+  _name: "\u306A\u306A\u3053"
+  _level: 1
+  _maxHp: 10
+  _hp: 10
+  _power: 3
+  _strenght: 2
+  _agility: 2
+  _experiencePoint: 0
+  _leftWeapon: {fileID: 11400000, guid: 3850fb97f4b85424ba241e61e0434894, type: 2}
+  _rightWeapon: {fileID: 0}

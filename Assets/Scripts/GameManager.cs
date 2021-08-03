@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
         currentFloor = 1;
         DispFloor();
         player = Instantiate( playerPrefab, new Vector3( 0, 0, 0 ), Quaternion.identity ).GetComponent<Player>();
-        helthBar.SetMaxHelth( player.GetMaxLife() );
+        helthBar.SetMaxHelth( 0 );
         DispPlayerStatus();
     }
 
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
     }
     void SpawnEnemy() {
         MatrixRange range = new MatrixRange();
-        // ƒvƒŒƒCƒ„[‚Ìü•Ó‚ÉƒXƒ|[ƒ“‚µ‚È‚¢‚½‚ß‚ÌƒGƒŠƒA”ÍˆÍ
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‘¨è¾ºã«ã‚¹ãƒãƒ¼ãƒ³ã—ãªã„ãŸã‚ã®ã‚¨ãƒªã‚¢ç¯„å›²
         range.x = ( int )player.transform.position.x - 4;
         range.y = ( int )player.transform.position.y - 4;
         range.w = 9;
@@ -111,13 +111,12 @@ public class GameManager : MonoBehaviour
         //    SpawnEnemy();
         //}
 
-        if ( !player.IsAlive() ) {
+        if ( false ) {
             Debug.Log( "GameOver" );
         }
     }
 
     public void LevelUp() {
-        helthBar.SetMaxHelth( player.GetMaxLife() );
     }
 
     public void AttackOnTarget( Vector2 target ) {
@@ -125,10 +124,9 @@ public class GameManager : MonoBehaviour
             if ( enemy.transform.position.x == target.x &&
                  enemy.transform.position.y == target.y ) {
                 player.AttackOnTarget( enemy );
-                if ( !enemy.IsAlive() ) {
+                if ( false ) {
                     layer2D.Set( ( int )enemy.transform.position.x, ( int )enemy.transform.position.y, ( int )Layer2D.MapValue.Pass );
                     enemyList.Remove( enemy );
-                    player.AddExp( enemy.GetExp() );
                     Destroy( enemy.gameObject );
                 }
                 break;
@@ -153,8 +151,6 @@ public class GameManager : MonoBehaviour
     }
 
     public void DispPlayerStatus() {
-        lifeText.text = player.GetCurrentLife().ToString() + "/" + player.GetMaxLife().ToString();
-        levelText.text = "Lv." + player.GetCurrentLevel().ToString();
     }
 
     public void PlayerTurn( int value ) {
@@ -186,7 +182,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // ˆÚ“®Œã‚ÌƒCƒxƒ“ƒg
+        // ç§»å‹•å¾Œã®ã‚¤ãƒ™ãƒ³ãƒˆ
         ExecuteEvent();
     }
 

@@ -18,12 +18,10 @@ public abstract class CharactorObject : MonoBehaviour
     }
     public bool IsAlive {
         get { return _isAlive; }
-        set { _isAlive = value; }
     }
 
 
     public int CurrentHp {
         get { return _currentHp; }
-        set { _currentHp = value; }
     }
 }

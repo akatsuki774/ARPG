@@ -7,32 +7,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item", menuName = "CreateItem")]
 public class Item : ScriptableObject
 {
-    public enum Type
-    {
-        HPRecovery,
-        Weapon,
-        Armor,
-    }
-
-    [SerializeField]
-    Type _itemType = Type.HPRecovery;
-    public Type ItemType
-    {
-        get { return _itemType; }
-    }
-
     [SerializeField]
     string _name = "";
     public string Name
     {
         get { return _name; }
-    }
-
-    [SerializeField]
-    string _sortName = "";
-    public string SortName
-    {
-        get { return _sortName; }
     }
 
     [SerializeField]
@@ -43,9 +22,9 @@ public class Item : ScriptableObject
     }
 
     [SerializeField]
-    int _amount = 0;
-    public int Amount
+    int _basicPrice = 0;
+    public int BasicPrice
     {
-        get { return _amount; }
+        get { return _basicPrice; }
     }
 }

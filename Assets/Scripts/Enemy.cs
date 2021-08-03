@@ -1,8 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Charactor
+public class Enemy : CharactorObject
 {
     public int damagePoint = 1;
     public int experience = 1;
@@ -11,8 +11,6 @@ public class Enemy : Charactor
 
     void Awake() {
         aster = new AStar();
-        currentLife = maxLife = DefaultLife;
-        isAlive = true;
     }
 
     public void Action( Layer2D layer, Player player ) {
@@ -29,7 +27,7 @@ public class Enemy : Charactor
         return experience;
     }
 
-    void Attack( Charactor target ) {
+    void Attack( CharactorObject target ) {
         this.AttackOnTarget( target );
     }
 
@@ -68,7 +66,7 @@ public class Enemy : Charactor
         }
     }
 
-    public override int GetDamage() {
+    public override int CalcAttackPoint() {
         return damagePoint;
     }
 }
