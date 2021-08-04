@@ -8,14 +8,21 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     [SerializeField]
-    string _name = "";
+    private string _name = "";
     public string Name
     {
         get { return _name; }
     }
 
     [SerializeField]
-    string _detail = "";
+    private Sprite _icon = null;
+    public Sprite Icon
+    {
+        get { return _icon; }
+    }
+
+    [SerializeField]
+    private string _detail = "";
     public string Detail
     {
         get { return _detail; }

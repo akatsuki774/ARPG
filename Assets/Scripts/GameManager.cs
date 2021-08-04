@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviour
     private int maxEnemySpawnNum = 10;
     [SerializeField]
     private MiniMap miniMap;
+    [SerializeField]
+    private Ema leftEma;
+    [SerializeField]
+    private Ema rightEma;
 
     public static GameManager instance = null;
     public int spawnTurnSpan = 5;
@@ -161,6 +165,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void DispPlayerStatus() {
+        leftEma.DisplayWeapon(player.GetLeftWeapon());
+        rightEma.DisplayWeapon(player.GetRightWeapon());
     }
 
     public void PlayerTurn( int value ) {

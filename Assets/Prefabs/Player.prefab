@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3670062440052906522}
   - component: {fileID: 2587239738803066215}
-  - component: {fileID: -8070357593074200632}
   - component: {fileID: -6125227697900462176}
+  - component: {fileID: -8070357593074200632}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2036718825
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6af4ea7ed274fd7488d96f58d9e414b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -84,22 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-8070357593074200632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3902336396438540462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73ac2669270fc2d4d893badb425f1aa3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CameraObject: {fileID: 0}
-  DefaultLife: 10
-  lifeText: {fileID: 0}
-  levelText: {fileID: 0}
 --- !u!95 &-6125227697900462176
 Animator:
   serializedVersion: 3
@@ -119,3 +103,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-8070357593074200632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3902336396438540462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73ac2669270fc2d4d893badb425f1aa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  status: {fileID: 11400000, guid: b39ceaf3ed734e849b5c14a202bab259, type: 2}
+  mainCamera: {fileID: 0}

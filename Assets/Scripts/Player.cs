@@ -5,31 +5,25 @@ using UnityEngine.UI;
 
 public class Player : CharactorObject
 {
+    // プレイヤーステータス
     [SerializeField]
-    CharacterStatus status = null;
+    private AllyStatus status = null;
 
-    public GameObject CameraObject;
-
-    private Dungueon dungueon;
-
-    // ステータス
-
-    private int currentLevel;
-    private Layer2D layer2D;
-    private Animator animator;
-    private int currentDirection;
+    Camera mainCamera;
+    Layer2D layer2D;
+    Animator animator;
+    int currentDirection;
 
     // Start is called before the first frame update
     void Awake() {
-        CameraObject = Camera.main.gameObject;
-        currentLevel = 1;
         animator = GetComponent<Animator>();
         currentDirection = 1;
         animator.SetInteger( "Direction", currentDirection );
     }
 
-    public void SetDungueon( Dungueon dungueon ) {
-        this.dungueon = dungueon;
+    public void Init( Camera camera )
+    {
+        mainCamera = camera;
     }
 
     public void SetLlayer2D( Layer2D layer2D ) {
@@ -39,29 +33,9 @@ public class Player : CharactorObject
     // Update is called once per frame
 
     public void FocusCamera() {
-        Camera camera = CameraObject.GetComponent<Camera>();
-        CameraObject.transform.position = new Vector3( this.transform.position.x, this.transform.position.y - camera.orthographicSize / 2, -10 );
+        mainCamera.transform.position = new Vector3( this.transform.position.x, this.transform.position.y - mainCamera.orthographicSize / 2, -10 );
     }
 
-    bool Action() {
-        if ( Input.GetKeyDown( "a" ) ) {
-            return Move( 2 );
-        } else
-        if ( Input.GetKeyDown( "d" ) ) {
-            return Move( 0 );
-        } else
-        if ( Input.GetKeyDown( "w" ) ) {
-            return Move( 3 );
-        } else
-        if ( Input.GetKeyDown( "s" ) ) {
-            return Move( 1 );
-        } else
-        if ( Input.GetKeyDown( "z" ) ) {
-            return Attack();
-        }
-
-        return false;
-    }
     public bool Move( int direction ) {
 
         animator.SetInteger( "Direction", direction );
@@ -87,7 +61,7 @@ public class Player : CharactorObject
         }
 
         int state = layer2D.Get( ( int )pos.x, ( int )pos.y );
-        if ( dungueon.CheckPassable( pos ) && state != ( int )Layer2D.MapValue.Forbid &&
+        if ( state != ( int )Layer2D.MapValue.Forbid &&
              state != ( int )Layer2D.MapValue.Enemy ) {
             transform.position = new Vector3( pos.x, pos.y, 0 );
             FocusCamera();
@@ -117,14 +91,20 @@ public class Player : CharactorObject
         return true;
     }
 
-    public int GetCurrentLevel() {
-        return currentLevel;
-    }
-
     public override int CalcAttackPoint() {
         return 0;
     }
 
     public void LevelUp() {
+    }
+
+    public Weapon GetLeftWeapon()
+    {
+        return status.LeftWeapon;
+    }
+
+    public Weapon GetRightWeapon()
+    {
+        return status.RightWeapon;
     }
 }

@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: NormalSword
   m_EditorClassIdentifier: 
   _name: "\u30CE\u30FC\u30DE\u30EB\u30BD\u30FC\u30C9"
+  _icon: {fileID: 21300000, guid: 2853ed5d4ba10384f9f11885df21bd56, type: 3}
   _detail: "\u30AD\u30DB\u30F3\u306E\u3076\u304D"
   _basicPrice: 10
+  _type: 0
   _point: 2
