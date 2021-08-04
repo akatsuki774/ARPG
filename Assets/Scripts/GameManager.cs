@@ -12,6 +12,12 @@ public class GameManager : MonoBehaviour
     public Text levelText;
     public Text floorText;
     public GameObject enemyPrefab;
+    [SerializeField]
+    private Camera mainCamera;
+    [SerializeField]
+    private int maxEnemySpawnNum = 10;
+    [SerializeField]
+    private MiniMap miniMap;
 
     public static GameManager instance = null;
     public int spawnTurnSpan = 5;
@@ -28,9 +34,9 @@ public class GameManager : MonoBehaviour
         if( instance == null ) {
             instance = this;
         } else {
-            Destroy( gameObject );
+            Destroy( this.gameObject );
         }
-        DontDestroyOnLoad( gameObject );
+        DontDestroyOnLoad( this.gameObject );
     }
     // Start is called before the first frame update
     void Start()
@@ -60,11 +66,12 @@ public class GameManager : MonoBehaviour
         dungueon.Create();
         layer2D = dungueon.ConvertToLayer2D();
         Vector2Int pos = new Vector2Int();
-        dungueon.GetRandomPosition( ref pos );
-        player.transform.position = new Vector3( pos.x, pos.y, 0 );
-        player.SetDungueon( dungueon );
-        player.SetLlayer2D( layer2D );
+        dungueon.GetRandomPosition(ref pos);
+        player.transform.position = new Vector3(pos.x, pos.y, 0);
+        player.Init(mainCamera);
+        player.SetLlayer2D(layer2D);
         player.FocusCamera();
+        miniMap.SetLayer2D(layer2D);
         for ( int i = 0; i < 10; i++ ) {
             SpawnEnemy();
         }
@@ -105,7 +112,10 @@ public class GameManager : MonoBehaviour
     void NextTurn() {
         isPlayerTurn = !isPlayerTurn;
         if ( isPlayerTurn ) {
+            // 次ターン開始処理
             turnCount++;
+            Vector2Int pos = new Vector2Int((int)player.transform.position.x, (int)player.transform.position.y);
+            miniMap.UpdateMap(pos);
         }
         //if ( turnCount % spawnTurnSpan == 0 ) {
         //    SpawnEnemy();
