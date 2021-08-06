@@ -116,10 +116,8 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator EnemyTurn() {
-        Debug.Log( "EnemyTurn Start" );
         if ( enemyList.Count <= 0 ) {
             NextTurn();
-            Debug.Log( "EnemyTurn End" );
             yield break;
         }
 
@@ -128,7 +126,6 @@ public class GameManager : MonoBehaviour
         }
 
         NextTurn();
-        Debug.Log( "EnemyTurn End" );
         yield return 0;
     }
 
