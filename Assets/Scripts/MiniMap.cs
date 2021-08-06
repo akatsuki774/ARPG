@@ -37,7 +37,7 @@ public class MiniMap : MonoBehaviour
         layer2D = layer;
     }
 
-    public void UpdateMap( Vector2Int playerPos )
+    public void UpdateMap( Vector2Int playerPos, Dictionary<Vector2Int, CharacterObject> charactorObjects )
     {
         for (int i = 0; i < mapSize.y; i++)
         {
@@ -47,11 +47,18 @@ public class MiniMap : MonoBehaviour
                 {
                     case Layer2D.MapValue.Pass:
                         objArray[i, j].SetActive(true);
-                        objArray[i, j].GetComponent<Image>().color = Color.blue;
-                        break;
-                    case Layer2D.MapValue.Enemy:
-                        objArray[i, j].SetActive(true);
-                        objArray[i, j].GetComponent<Image>().color = Color.red;
+                        Vector2Int pos = new Vector2Int( j, i );
+                        if ( charactorObjects.TryGetValue( pos, out var obj ) )
+                        {
+                            if ( obj.GetType() == typeof( Enemy ) )
+                            {
+                                objArray[i, j].GetComponent<Image>().color = Color.red;
+                            }
+                        }
+                        else
+                        {
+                            objArray[i, j].GetComponent<Image>().color = Color.blue;
+                        }
                         break;
                     case Layer2D.MapValue.Stair:
                         objArray[i, j].SetActive(true);

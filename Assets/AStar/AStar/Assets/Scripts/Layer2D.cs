@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 /// 2次元レイヤー
 public class Layer2D {
@@ -8,7 +9,6 @@ public class Layer2D {
     {
 		Pass,
 		Forbid,
-		Enemy,
 		Stair,
 		OutOfRange
     }
@@ -82,4 +82,9 @@ public class Layer2D {
 			Debug.Log(s);
 		}
 	}
+
+    public Layer2D Clone()
+    {
+        throw new NotImplementedException();
+    }
 }

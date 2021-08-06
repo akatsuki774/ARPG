@@ -72,7 +72,7 @@ public class AStar : MonoBehaviour {
 				var dy = Mathf.Abs (ygoal - Y);
 				_heuristic = (int)(dx + dy);
 			}
-			Dump();
+			//Dump();
 		}
 		/// ステータスがNoneかどうか.
 		public bool IsNone() {
@@ -80,14 +80,14 @@ public class AStar : MonoBehaviour {
 		}
 		/// ステータスをOpenにする.
 		public void Open(ANode parent, int cost) {
-			Debug.Log (string.Format("Open: ({0},{1})", X, Y));
+			//Debug.Log (string.Format("Open: ({0},{1})", X, Y));
 			_status = eStatus.Open;
 			_cost   = cost;
 			_parent = parent;
 		}
 		/// ステータスをClosedにする.
 		public void Close() {
-			Debug.Log (string.Format ("Closed: ({0},{1})", X, Y));
+			//Debug.Log (string.Format ("Closed: ({0},{1})", X, Y));
 			_status = eStatus.Closed;
 		}
 		/// パスを取得する
@@ -97,16 +97,16 @@ public class AStar : MonoBehaviour {
 				_parent.GetPath(pList);
 			}
 		}
-		public void Dump() {
-			Debug.Log (string.Format("({0},{1})[{2}] cost={3} heuris={4} score={5}", X, Y, _status, _cost, _heuristic, GetScore()));
-		}
-		public void DumpRecursive() {
-			Dump ();
-			if(_parent != null) {
-				// 再帰的にダンプする.
-				_parent.DumpRecursive();
-			}
-		}
+		//public void Dump() {
+		//	Debug.Log (string.Format("({0},{1})[{2}] cost={3} heuris={4} score={5}", X, Y, _status, _cost, _heuristic, GetScore()));
+		//}
+		//public void DumpRecursive() {
+		//	Dump ();
+		//	if(_parent != null) {
+		//		// 再帰的にダンプする.
+		//		_parent.DumpRecursive();
+		//	}
+		//}
 	}
 
 	/// A-starノード管理.
@@ -160,8 +160,7 @@ public class AStar : MonoBehaviour {
 				// 領域外.
 				return null;
 			}
-			if(_layer.Get( x, y ) == ( int )Layer2D.MapValue.Forbid ||
-			   _layer.Get( x, y ) == ( int )Layer2D.MapValue.Stair ) {
+			if(_layer.Get( x, y ) == ( int )Layer2D.MapValue.Forbid ) {
 				// 通過できない.
 				return null;
 			}
@@ -273,17 +272,17 @@ public class AStar : MonoBehaviour {
 	}
 	eState _state = eState.Exec;
 
-	public Vector2 CalcWay( Layer2D layer2d, Vector2 start, Vector2 goal, bool allowdiag ) {
-		var mgr = new ANodeMgr( layer2d, ( int )goal.x, ( int )goal.y, allowdiag );
+	public Vector2Int CalcWay( Layer2D layer2d, Vector2Int start, Vector2Int goal, bool allowdiag ) {
+		var mgr = new ANodeMgr( layer2d, goal.x, goal.y, allowdiag );
 
 		var pList = new List<Point2>();
 
 		// スタート地点のノード取得
 		// スタート地点なのでコストは「0」
-		ANode node = mgr.OpenNode( ( int )start.x, ( int )start.y, 0, null );
+		ANode node = mgr.OpenNode( start.x, start.y, 0, null );
 		mgr.AddOpenList( node );
 
-		// 試行回数。1000回超えたら強制中断
+		// 試行回数。
 		int cnt = 0;
 		ANode beforeNode = null;
 		while ( cnt < 50 ) {
@@ -294,7 +293,7 @@ public class AStar : MonoBehaviour {
 			node = mgr.SearchMinScoreNodeFromOpenList();
 			if ( node == null ) {
 				// 袋小路なのでおしまい.
-				Debug.Log( "Not found path." );
+				//Debug.Log( "Not found path." );
 				if ( beforeNode != null ) {
 					mgr.RemoveOpenList( beforeNode );
 					// パスを取得する
@@ -307,9 +306,9 @@ public class AStar : MonoBehaviour {
 			beforeNode = node;
 			if ( node.X == goal.x && node.Y == goal.y ) {
 				// ゴールにたどり着いた.
-				Debug.Log( "Success." );
+				//Debug.Log( "Success." );
 				mgr.RemoveOpenList( node );
-				node.DumpRecursive();
+				//node.DumpRecursive();
 				// パスを取得する
 				node.GetPath( pList );
 				// 反転する
@@ -319,12 +318,9 @@ public class AStar : MonoBehaviour {
 		}
 
 		if ( pList.Count <= 1 ) {
-			return new Vector2( start.x, start.y );
+			return new Vector2Int( start.x, start.y );
 		}
-		Vector2 pos = new Vector2();
-		pos.x = pList[1].x;
-		pos.y = pList[1].y;
-		return pos;
+		return new Vector2Int( pList[1].x , pList[1].y );
 	}
 
 	void Update () {
