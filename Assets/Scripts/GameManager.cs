@@ -22,10 +22,17 @@ public class GameManager : MonoBehaviour
     private Ema leftEma;
     [SerializeField]
     private Ema rightEma;
+    [SerializeField]
+    private UserStatus _userStatusAsset;
 
     public static GameManager instance = null;
     public int spawnTurnSpan = 5;
     public HelthBar helthBar;
+
+    [SerializeField]
+    private ItemObject itemPrefab;
+    [SerializeField]
+    private Item spawnItem;
 
     private Player player;
     private List<Enemy> enemyList = new List<Enemy>();
@@ -33,12 +40,16 @@ public class GameManager : MonoBehaviour
     private Layer2D playerLayer2D;
     // 階段を通過不可にするためLayer2Dを分けている
     private Layer2D enemyLayer2D;
-    // マップにあるオブジェクト情報
+    // マップにあるキャラクターオブジェクトの位置情報
     private Dictionary<Vector2Int, CharacterObject> characterObjects;
+    // マップにあるアイテムオブジェクト位置情報
+    private Dictionary<Vector2Int, ItemObject> itemObjects;
 
     private int turnCount;
     private int currentFloor;
     private bool isPlayerTurn;
+
+    private UserStatus userStatus;
 
     void Awake() {
         if( instance == null ) {
@@ -69,10 +80,13 @@ public class GameManager : MonoBehaviour
         player = Instantiate( playerPrefab, new Vector3( 0, 0, 0 ), Quaternion.identity ).GetComponent<Player>();
         helthBar.SetMaxHelth( 0 );
         DispPlayerStatus();
+        userStatus = Instantiate( _userStatusAsset );
     }
 
     void CreateFloor() {
         characterObjects = new Dictionary<Vector2Int, CharacterObject>();
+        itemObjects = new Dictionary<Vector2Int, ItemObject>();
+
         isPlayerTurn = true;
         dungueon.Create( 64, 64 );
         playerLayer2D = dungueon.ConvertToLayer2D();
@@ -87,6 +101,7 @@ public class GameManager : MonoBehaviour
         for ( int i = 0; i < 10; i++ )
         {
             SpawnEnemy();
+            RandomSpawnItem();
         }
     }
 
@@ -113,6 +128,22 @@ public class GameManager : MonoBehaviour
         Enemy enemy = Instantiate( enemyPrefab, new Vector3( pos.x, pos.y, 0 ), Quaternion.identity ).GetComponent<Enemy>();
         enemyList.Add( enemy );
         characterObjects.Add( enemy.GetPosition(), enemy );
+    }
+
+    void RandomSpawnItem()
+    {
+        Vector2Int pos = new Vector2Int();
+        while ( true )
+        {
+            dungueon.GetRandomPositionInRoom( ref pos );
+            if ( !characterObjects.TryGetValue( pos, out _ ) && !itemObjects.TryGetValue( pos, out _ ) )
+            {
+                break;
+            }
+        }
+        ItemObject obj = Instantiate( itemPrefab, new Vector3( pos.x, pos.y, 0 ), Quaternion.identity );
+        obj.Item = spawnItem;
+        itemObjects.Add( obj.GetPosition(), obj );
     }
 
     IEnumerator EnemyTurn() {
@@ -192,16 +223,10 @@ public class GameManager : MonoBehaviour
         bool actProceed = false;
         switch( value ) {
             case 0:
-                actProceed = player.Move( playerLayer2D, characterObjects, 0 );
-                break;
             case 1:
-                actProceed = player.Move( playerLayer2D, characterObjects, 1 );
-                break;
             case 2:
-                actProceed = player.Move( playerLayer2D, characterObjects, 2 );
-                break;
             case 3:
-                actProceed = player.Move( playerLayer2D, characterObjects, 3 );
+                actProceed = player.Move( playerLayer2D, characterObjects, value );
                 break;
             case 4:
                 player.Attack();
@@ -218,15 +243,26 @@ public class GameManager : MonoBehaviour
     }
 
     void ExecuteEvent() {
-        Vector2 pos = player.GetPosition();
-        int map = playerLayer2D.Get( ( int )pos.x, ( int )pos.y );
-        switch ( map ) {
-            case ( int )Layer2D.MapValue.Stair:
-                NextFloor();
-                break;
-            default:
-                NextTurn();
-                break;
+        Vector2Int pos = player.GetPosition();
+        int map = playerLayer2D.Get( pos.x, pos.y );
+        itemObjects.TryGetValue( pos, out var obj );
+        if ( obj != null )
+        {
+            userStatus.AddItem( obj.Item, 1 );
+            itemObjects.Remove( pos );
+            Destroy( obj.gameObject );
+        }
+        else
+        {
+            switch ( map )
+            {
+                case ( int )Layer2D.MapValue.Stair:
+                    NextFloor();
+                    break;
+                default:
+                    NextTurn();
+                    break;
+            }
         }
     }
 }

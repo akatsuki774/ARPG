@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb5469bd67684b1448d871a54c39f710, type: 3}
-  m_Name: UserInfomation
+  m_Name: DefaultUserStatus
   m_EditorClassIdentifier: 
   _money: 0
   _itemDictionary:

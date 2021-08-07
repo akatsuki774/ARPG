@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class Player : CharacterObject
 {
+    private static readonly Vector2Int[] Direction = { new Vector2Int( 1, 0 ),
+                                                       new Vector2Int( 0, -1 ),
+                                                       new Vector2Int( -1, 0 ),
+                                                       new Vector2Int( 0, 1 ) };
     // プレイヤーステータス
     [SerializeField]
     private AllyStatus status = null;
@@ -31,37 +35,28 @@ public class Player : CharacterObject
         mainCamera.transform.position = new Vector3( this.transform.position.x, this.transform.position.y - mainCamera.orthographicSize / 2, -10 );
     }
 
-    public bool Move( Layer2D layer, Dictionary<Vector2Int, CharacterObject> characterObjects, int direction ) {
+    public bool Move( Layer2D layer, Dictionary<Vector2Int, CharacterObject> characterObjects, int dir ) {
 
-        animator.SetInteger( "Direction", direction );
-        if ( currentDirection != direction ) {
-            currentDirection = direction;
+        animator.SetInteger( "Direction", dir );
+        if ( currentDirection != dir ) {
+            currentDirection = dir;
             return false;
         }
 
         Vector2Int movePos = this.GetPosition();
-        switch( direction ) {
-            case 0:
-                movePos.x += 1;
-                break;
-            case 1:
-                movePos.y += -1;
-                break;
-            case 2:
-                movePos.x += -1;
-                break;
-            case 3:
-                movePos.y += 1;
-                break;
-        }
+        movePos.x += Direction[dir].x;
+        movePos.y += Direction[dir].y;
 
         int state = layer.Get( movePos.x, movePos.y );
-        if ( state != ( int )Layer2D.MapValue.Forbid && !characterObjects.TryGetValue( movePos, out _ ) ) {
-            characterObjects.Remove( this.GetPosition() );
-            transform.position = new Vector3( movePos.x, movePos.y, 0 );
-            characterObjects.Add( movePos, this );
-            FocusCamera();
-            return true;
+        if ( state != ( int )Layer2D.MapValue.Forbid ) {
+            if ( characterObjects.TryGetValue( movePos, out _ ) == false )
+            {
+                characterObjects.Remove( this.GetPosition() );
+                transform.position = new Vector3( movePos.x, movePos.y, 0 );
+                characterObjects.Add( movePos, this );
+                FocusCamera();
+                return true;
+            }
         }
 
         return false;

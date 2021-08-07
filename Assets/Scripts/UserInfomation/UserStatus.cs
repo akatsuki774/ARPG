@@ -6,7 +6,7 @@ using UnityEngine;
 
 [Serializable]
 [CreateAssetMenu(fileName = "UserInfomation", menuName = "CreateUserInfomation")]
-public class UserInfomation : ScriptableObject
+public class UserStatus : ScriptableObject
 {
     // 所持金
     [SerializeField]
@@ -26,7 +26,14 @@ public class UserInfomation : ScriptableObject
     // アイテムの追加
     public void AddItem( Item item, int num )
     {
-        _itemDictionary.Add(item, num);
+        if( _itemDictionary.TryGetValue( item, out var n ) )
+        {
+            _itemDictionary[item] = n + num;
+        }
+        else
+        {
+            _itemDictionary.Add( item, num );
+        }
     }
     //　平仮名の名前でソートしたItemDictionaryを返す
     public IOrderedEnumerable<KeyValuePair<Item, int>> GetSortItemDictionary()
@@ -34,12 +41,12 @@ public class UserInfomation : ScriptableObject
         return _itemDictionary.OrderBy( item => item.Key.Name );
     }
     // アイテムの個数を設定する
-    public void SetItemNum( Item item, int num)
+    public void SetItemNum( Item item, int num )
     {
         _itemDictionary[item] = num;
     }
     // アイテム数を返す
-    public int GetItemNum( Item item)
+    public int GetItemNum( Item item )
     {
     return _itemDictionary[item];
     }
